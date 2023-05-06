@@ -1,0 +1,17 @@
+{
+  "name": "oyohim",
+  "version": "0.0.0",
+  "description": "A HoyoLab library for nodejs",
+  "author": "Lipraty <i@lonay.me>",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "license": "AGPL-3.0-or-later",
+  "files": ["lib"],
+  "scripts": {
+  },
+  "keywords": [
+    "mihoyo",
+    "hoyolab",
+    "miyoushe"
+  ]
+}
