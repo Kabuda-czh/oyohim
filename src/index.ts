@@ -3,9 +3,9 @@ import { OyohimApi } from "./api";
 import { DynamicSecret, Salter } from "./secret";
 
 class Oyohim {
+    public deviceHash: string
+    public cookie: string
     private act_id: string
-    // private conf: HoyoConfig
-    // private device: DeviceInformation
     private salter: Salter
     private clientType: ClientType
     protected region: Oyohim.Region
@@ -21,8 +21,12 @@ class Oyohim {
         this.salter = DynamicSecret.Salt[this.region][clientOptions.version]
         this.act_id = ActID[this.region]
     }
+
+    client(deviceHash: string, cookie?: string){
+
+    }
 }
 
 namespace Oyohim { }
 
-export { Oyohim }
+export { Oyohim, ClientType as OyohimClientType }

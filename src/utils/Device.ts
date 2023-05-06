@@ -7,7 +7,7 @@ import { DeviceInformation } from "../typer/Device"
  * 参考自Mirai、MIraiGo、OICQ项目实现
  */
 export class DeviceInfo {
-    constructor(private uid: string, private dsalt?: string) { }
+    constructor(private deviceHash: string) { }
 
     private calcSP(imei: string) {
         let sum = 0
@@ -23,19 +23,19 @@ export class DeviceInfo {
     }
 
     private createImei() {
-        let imei = parseInt(this.uid) % 2 ? "86" : "35"
+        let imei = this.deviceHash.length % 2 ? "86" : "35"
         const buf = Buffer.alloc(4)
-        buf.writeUInt32BE(parseInt(this.uid))
+        buf.writeUInt32BE(this.deviceHash.length)
         let a: number | string = buf.readUInt16BE()
         let b: number | string = Buffer.concat([Buffer.alloc(1), buf.slice(1)]).readUInt32BE()
         if (a > 9999)
             a = Math.trunc(a / 10)
         else if (a < 1000)
-            a = String(this.uid).substring(0, 4)
+            a = this.deviceHash.substring(0, 4)
         while (b > 9999999)
             b = b >>> 1
         if (b < 1000000)
-            b = String(this.uid).substring(0, 4) + String(this.uid).substring(0, 3)
+            b = this.deviceHash.substring(0, 4) + this.deviceHash.substring(0, 3)
         imei += a + "0" + b
         return imei + this.calcSP(imei)
     }
@@ -46,7 +46,7 @@ export class DeviceInfo {
      * 现已加入DSalt作为可变随机值，以确保device信息可以更新
      */
     public createDevice(): DeviceInformation {
-        const uidKey: Buffer = createHash('md5').update(this.uid + this.dsalt).digest()
+        const uidKey: Buffer = createHash('md5').update(this.deviceHash).digest()
         const ukHex: string = uidKey.toString('hex')
 
         const aid: string = `KOISHI.${Math.trunc(parseInt(ukHex, 16) / 1e+33)}.011`
@@ -66,7 +66,7 @@ export class DeviceInfo {
             VendorOSName: 'koishi',
             Version: {
                 Incremental: uidKey.readUInt32BE(12),
-                Release: (parseInt(this.uid)) % 8 + 6,
+                Release: (this.deviceHash.length) % 8 + 6,
                 CodeName: 'REL',
                 SDK: 29
             }
