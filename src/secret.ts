@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto"
 import { Random } from "./utils/Random"
-import { Region } from "./typer/Region"
 import { Semver } from "./typer/Semver"
+import { Oyohim } from "."
 
 type Salter = {
     api?: string
@@ -51,7 +51,7 @@ namespace DynamicSecret {
         : T extends 'webview'
         ? (body?: Record<string, any>, params?: Record<string, any>) => string
         : T
-    export const Salt: Record<Region, Record<Semver, Salter>> = {
+    export const Salt: Record<Oyohim.Region, Record<Semver, Salter>> = {
         cn: {
             '2.45.1': {
                 bbs: 'Ea0hkTHxe9cJDwlw4hswBGHDfSlmM5t9'

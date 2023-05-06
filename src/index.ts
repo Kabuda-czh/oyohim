@@ -1,4 +1,3 @@
-import { Region } from "./typer/Region";
 import { ActID, ClientOptions, ClientType } from "./typer/Client";
 import { OyohimApi } from "./api";
 import { DynamicSecret, Salter } from "./secret";
@@ -9,7 +8,7 @@ class Oyohim {
     // private device: DeviceInformation
     private salter: Salter
     private clientType: ClientType
-    protected region: Region
+    protected region: Oyohim.Region
 
     /**
      * 创建 Oyohim 客户端
@@ -23,5 +22,7 @@ class Oyohim {
         this.act_id = ActID[this.region]
     }
 }
+
+namespace Oyohim { }
 
 export { Oyohim }

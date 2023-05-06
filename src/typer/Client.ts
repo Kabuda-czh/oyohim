@@ -1,7 +1,7 @@
+import { Oyohim } from ".."
 import { DynamicSecret } from "../secret"
-import { Region } from "./Region"
 
-export type ClientOptions<R extends Region = never> = {
+export type ClientOptions<R extends Oyohim.Region = never> = {
     type: ClientType,
     region?: R
     version: ClientVersion<R>
@@ -13,7 +13,7 @@ export enum ClientType {
     WEBVIEW = 5
 }
 
-export type ClientVersion<T extends Region> = keyof typeof DynamicSecret.Salt[T]
+export type ClientVersion<T extends Oyohim.Region> = keyof typeof DynamicSecret.Salt[T]
 
 export type HoyoConfig = {
     actID: string
@@ -23,7 +23,7 @@ export type HoyoConfig = {
     salt: string
 }
 
-export const ActID: Record<Region, string> = {
+export const ActID: Record<Oyohim.Region, string> = {
     cn: 'e202009291139501',
     os: 'e202102251931481'
 }
