@@ -4,7 +4,7 @@
 
 A Oyohim api client
 
-## Install
+## Installation
 
 ```shell
 yarn add oyohim
@@ -14,31 +14,54 @@ yarn add oyohim
 npm i oyohim
 ```
 
-## Usage
+## Quick Start
 
-In oyohim, you need to inject the api for yourself and use the `declare module` to extend the type. 
+```typescript
+import { Oyohim, Locale, Client } from 'oyohim';
+
+const client = new Oyohim({
+    language: Locale.zhCN,
+    type: Client.ANDOROID,
+    version: '2.45.1'
+});
+
+client.login('ltuid', 'ltoken');
+
+const abyss = await client.abyss('uid');
+```
+
+## Extend API
+
+To extend an API, the API type needs to be defined in `declare module`, which will make TypeScript work correctly.
 
 Simple example:
 
 ```typescript
-import { OyohimApi } from 'oyohim';
+import { OyohimApi, ApiQuester } from 'oyohim';
 
 declare module 'oyohim' {
     interface Api {
-        foo: (params: {uid: string}) => string
+        foo: (uid: string) => string
     }
 }
 
-OyohimApi.define('foo', OyohimApi.Region.CN, 'GET', OyohimApi.Base.takumi, '/foo/event');
-```
+inteface FooDataType {
+    bar: string
+    baz: number
+}
 
-Next, you just need to add the Oyohim class to request your api:
+OyohimApi.define('foo', {
+    base: OyohimApi.Base.takumi,
+    method: OyohimApi.Quester.GET, 
+    region: OyohimApi.Region.CN, 
+    path: '/foo/event'
+});
 
-```typescript
-import { Oyohim, OyohimApi, OyohimClientType } from 'oyohim'; //Update import from 'oyohim'
-
-const apiClient = new Oyohim(OyohimApi, {type: OyohimClientType.ANDOROID, version: '2.45.1'});
-const res = apiClient.client('deviceHash#114514', 'cookies').foo({'100114514'});
+//We can use `OyohimApi.mixins()` to process the api responses.
+OyohimApi.mixins<string>('foo', (api: ApiQuester<FooDataType>) => {
+    //your code...
+    return 'data'
+});
 ```
 ## License
 
